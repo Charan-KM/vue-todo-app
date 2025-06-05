@@ -1,52 +1,44 @@
-<template>
-  <div class="todo-app">
-    <header>
-      <h1>Todo App</h1>
-    </header>
+<template lang="pug">
+  .todo-app
+    header
+      h1 Todo App
 
-    <form @submit.prevent="addTodo" class="add-todo">
-      <input
+    form.add-todo(@submit.prevent="addTodo")
+      input.todo-input(
         v-model="newTodo"
         type="text"
         placeholder="Add a new todo..."
-        class="todo-input"
         required
-      />
-      <button type="submit" class="add-btn">Add Todo</button>
-    </form>
+      )
+      button.add-btn(type="submit") Add Todo
 
-    <div class="filters">
-      <button
+    .filters
+      button.filter-btn(
         v-for="filter in filters"
         :key="filter"
         @click="currentFilter = filter"
         :class="{ active: currentFilter === filter }"
-        class="filter-btn"
-      >
-        {{ filter }}
-      </button>
-    </div>
+      ) {{ filter }}
 
-    <ul class="todo-list">
-      <li v-for="todo in filteredTodos" :key="todo.id" class="todo-item">
-        <input type="checkbox" v-model="todo.completed" class="todo-checkbox" />
-        <span :class="{ completed: todo.completed }" class="todo-text">
-          {{ todo.text }}
-        </span>
-        <button @click="deleteTodo(todo.id)" class="delete-btn">Delete</button>
-      </li>
-    </ul>
+    ul.todo-list
+      li.todo-item(
+        v-for="todo in filteredTodos"
+        :key="todo.id"
+      )
+        input.todo-checkbox(
+          type="checkbox"
+          v-model="todo.completed"
+        )
+        span.todo-text(:class="{ completed: todo.completed }") {{ todo.text }}
+        button.delete-btn(@click="deleteTodo(todo.id)") Delete
 
-    <footer class="todo-footer">
-      <span class="todo-count">
-        {{ activeTodoCount }} {{ activeTodoCount === 1 ? 'item' : 'items' }} left
-      </span>
-      <button v-if="completedCount > 0" @click="clearCompleted" class="clear-completed">
-        Clear completed
-      </button>
-    </footer>
-  </div>
-</template>
+    footer.todo-footer
+      span.todo-count {{ activeTodoCount }} {{ activeTodoCount === 1 ? 'item' : 'items' }} left
+      button.clear-completed(
+        v-if="completedCount > 0"
+        @click="clearCompleted"
+      ) Clear completed
+  </template>
 
 <script>
 export default {
